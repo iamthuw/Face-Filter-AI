@@ -11,7 +11,7 @@ TRAIN_XML_FILE = os.path.join(DATA_ROOT, 'labels_ibug_300W_train.xml')
 IMAGE_SIZE = 128
 EPOCHS = 50
 BATCH_SIZE = 32
-MODEL_SAVE_PATH = 'saved_models/facial_landmark_detector.h5'
+MODEL_SAVE_PATH = 'src/CNN/saved_model/facial_landmark_detector.h5'
 
 # 1. Tải và xử lý dữ liệu
 # Dòng mới
