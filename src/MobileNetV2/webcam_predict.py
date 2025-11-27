@@ -11,8 +11,7 @@ from config import *
 # 1. ĐỘ RỘNG/HẸP (SCALE)
 # - Nếu landmark BÉ quá (co cụm) -> TĂNG số này lên (ví dụ 0.15, 0.2)
 # - Nếu landmark TO quá (bay ra ngoài) -> GIẢM số này xuống (ví dụ 0.05, 0.0)
-PADDING_RATIO = 0.18 # Thử mức 12%
-
+PADDING_RATIO = 0.18
 # 2. ĐỘ CAO/THẤP (SHIFT Y)
 # - Nếu landmark bị LỆCH LÊN TRÊN -> TĂNG số này (ví dụ 0.05, 0.1) để dịch khung nhìn xuống
 # - Nếu landmark bị LỆCH XUỐNG DƯỚI -> GIẢM số này (ví dụ -0.05)

@@ -7,9 +7,9 @@ from sklearn.model_selection import train_test_split
 from config import *
 
 # --- CẤU HÌNH ---
-PADDING_RATIO = 0.25  # Padding 25% để lấy trán và cằm
+PADDING_RATIO = 0.25
 
-# Khởi tạo bộ phát hiện khuôn mặt (Haar Cascade)
+# Khởi tạo Haar Cascade
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 # Cấu hình lật ảnh
@@ -27,7 +27,7 @@ for l, r in SYMMETRICAL_LANDMARKS:
     FLIP_MAP[r] = l
 
 def _read_pts_file(pts_path):
-    """Đọc file .pts, bỏ qua header, trả về tọa độ gốc."""
+    """Đọc file .pts an toàn."""
     with open(pts_path, 'r') as f:
         lines = f.readlines()
     points = []
@@ -45,6 +45,7 @@ def _read_pts_file(pts_path):
     return np.array([])
 
 def _augment_flip(image, landmarks):
+    """Lật ảnh và landmark."""
     img_flip = cv2.flip(image, 1)
     lm_flip = landmarks.copy()
     lm_flip[:, 0] = 1.0 - lm_flip[:, 0]
@@ -52,13 +53,14 @@ def _augment_flip(image, landmarks):
     return img_flip, lm_flip
 
 def process_and_split_data(raw_dir, output_dir, img_size=128, test_size=0.2):
+    """Tạo dữ liệu với Padding 25% và Box Vuông."""
     all_data = []
-    print(f"--- XỬ LÝ DỮ LIỆU: DÙNG HAAR CASCADE ĐỂ ĐỒNG BỘ HÓA ---")
-    print(f"--- PADDING: {PADDING_RATIO*100}% | LÀM VUÔNG: CÓ ---")
+    print(f"--- XỬ LÝ DỮ LIỆU: HAAR CASCADE + PADDING {PADDING_RATIO*100}% + SAFE CROP ---")
 
     for root, _, files in os.walk(raw_dir):
         for fname in files:
             if not (fname.lower().endswith('.jpg') or fname.lower().endswith('.png')): continue
+            
             img_path = os.path.join(root, fname)
             pts_path = os.path.splitext(img_path)[0] + '.pts'
             if not os.path.exists(pts_path): continue
@@ -69,32 +71,34 @@ def process_and_split_data(raw_dir, output_dir, img_size=128, test_size=0.2):
             landmarks = _read_pts_file(pts_path)
             if len(landmarks) != 68: continue
 
-            # --- 1. TÌM FACE BOX BẰNG HAAR CASCADE ---
+            # 1. Tìm mặt bằng Haar Cascade
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
             if len(faces) == 0: continue
             
-            # Chọn mặt lớn nhất
+            # Lấy mặt lớn nhất
             bx, by, bw, bh = max(faces, key=lambda item: item[2] * item[3])
 
-            # --- 2. ÁP DỤNG PADDING VÀ LÀM VUÔNG ---
+            # 2. Tính Box Vuông + Padding
             max_side = max(bw, bh)
             pad = int(max_side * PADDING_RATIO)
             square_side = max_side + 2 * pad
+            
             center_x = bx + bw // 2
             center_y = by + bh // 2
             
+            # Tọa độ hộp lý tưởng (có thể âm)
             x1 = int(center_x - square_side // 2)
             y1 = int(center_y - square_side // 2)
-
-            # --- 3. CHUẨN HÓA LANDMARK ---
+            
+            # 3. Chuẩn hóa Landmark theo hộp lý tưởng này
             lm_norm = landmarks.copy()
             lm_norm[:, 0] = (lm_norm[:, 0] - x1) / square_side
             lm_norm[:, 1] = (lm_norm[:, 1] - y1) / square_side
             
-            # --- 4. LỌC DỮ LIỆU ---
-            if np.any(lm_norm < 0.0) or np.any(lm_norm > 1.0): continue
+            # Lọc dữ liệu nhiễu (nếu điểm bay quá xa khỏi hộp)
+            if np.any(lm_norm < -0.1) or np.any(lm_norm > 1.1): continue
 
             all_data.append({
                 'path': os.path.relpath(img_path, raw_dir),
@@ -102,9 +106,9 @@ def process_and_split_data(raw_dir, output_dir, img_size=128, test_size=0.2):
                 'landmarks': lm_norm.flatten()
             })
 
-    if not all_data: raise ValueError(f"Không tạo được dữ liệu nào hợp lệ từ {raw_dir}")
+    if not all_data: raise ValueError("Không tìm thấy dữ liệu!")
     
-    print(f"-> Đã chọn lọc được {len(all_data)} mẫu dữ liệu chất lượng cao.")
+    print(f"-> Đã chọn lọc {len(all_data)} mẫu.")
     train_set, test_set = train_test_split(all_data, test_size=test_size, random_state=42)
 
     def save_xml(data, path):
@@ -113,36 +117,33 @@ def process_and_split_data(raw_dir, output_dir, img_size=128, test_size=0.2):
         for item in data:
             img_node = ET.SubElement(images, 'image', file=item['path'])
             x, y, w, h = item['bbox']
+            # Lưu box vuông (có thể có tọa độ âm)
             box = ET.SubElement(img_node, 'box', top=str(y), left=str(x), width=str(w), height=str(h))
-            
-            # --- ĐÃ SỬA LỖI TẠI ĐÂY ---
-            # Tách rõ ràng if/else để gán biến 'part'
             for i, val in enumerate(item['landmarks']):
                 is_x = (i % 2 == 0)
                 if is_x:
-                    # Tạo thẻ mới và gán vào biến part
                     part = ET.SubElement(box, 'part', name=f"{i//2}", x=f"{val:.6f}")
                 else:
-                    # Dùng biến part của vòng lặp trước để set y
                     part.set('y', f"{val:.6f}")
-                    
         ET.ElementTree(root).write(path)
 
     os.makedirs(output_dir, exist_ok=True)
     save_xml(train_set, os.path.join(output_dir, 'train.xml'))
     save_xml(test_set, os.path.join(output_dir, 'test.xml'))
-    print("✅ Đã tạo file XML mới (Đồng bộ Haar Cascade) thành công.")
+    print("✅ Đã tạo file XML mới.")
 
 def load_and_preprocess_data(xml_path, img_root, target_size):
+    """Load dữ liệu với kỹ thuật SAFE CROP (Canvas đen)."""
     X_data, y_data = [], []
     tree = ET.parse(xml_path)
     root = tree.getroot()
-    print(f"--- Đang tải dữ liệu từ {xml_path} ---")
+    print(f"--- Đang tải {xml_path} ---")
     
     for img_node in root.find('images'):
         rel_path = img_node.get('file')
         full_path = os.path.join(img_root, rel_path)
         if not os.path.exists(full_path): continue
+        
         original_img = cv2.imread(full_path)
         if original_img is None: continue
         original_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
@@ -150,29 +151,51 @@ def load_and_preprocess_data(xml_path, img_root, target_size):
         box = img_node.find('box')
         if box is None: continue
         
-        x = int(float(box.get('left'))); y = int(float(box.get('top')))
-        w = int(float(box.get('width'))); h = int(float(box.get('height')))
+        # Tọa độ hộp lý tưởng (có thể âm)
+        x = int(float(box.get('left')))
+        y = int(float(box.get('top')))
+        w = int(float(box.get('width')))
+        h = int(float(box.get('height')))
         
-        # Cắt ảnh an toàn
+        # --- KỸ THUẬT SAFE CROP (CANVAS ĐEN) ---
+        # 1. Tạo nền đen chuẩn kích thước w*h
         face_crop = np.zeros((h, w, 3), dtype=np.uint8)
-        src_x1 = max(0, x); src_y1 = max(0, y)
-        src_x2 = min(original_img.shape[1], x + w); src_y2 = min(original_img.shape[0], y + h)
-        dst_x1 = src_x1 - x; dst_y1 = src_y1 - y
-        dst_x2 = dst_x1 + (src_x2 - src_x1); dst_y2 = dst_y1 + (src_y2 - src_y1)
         
+        # 2. Tính toán vùng giao nhau giữa hộp và ảnh gốc
+        src_x1 = max(0, x)
+        src_y1 = max(0, y)
+        src_x2 = min(original_img.shape[1], x + w)
+        src_y2 = min(original_img.shape[0], y + h)
+        
+        # 3. Tính toán vị trí dán lên nền đen
+        dst_x1 = src_x1 - x
+        dst_y1 = src_y1 - y
+        dst_x2 = dst_x1 + (src_x2 - src_x1)
+        dst_y2 = dst_y1 + (src_y2 - src_y1)
+        
+        # Kiểm tra nếu vùng giao hợp lệ
         if src_x2 <= src_x1 or src_y2 <= src_y1: continue
+        
+        # 4. Copy ảnh vào nền đen
         face_crop[dst_y1:dst_y2, dst_x1:dst_x2] = original_img[src_y1:src_y2, src_x1:src_x2]
         
+        # --- KẾT THÚC SAFE CROP ---
+        
+        # Resize về 128x128
         face_resized = cv2.resize(face_crop, (target_size, target_size))
         
         lms = []
         for part in box.findall('part'):
-            lms.append(float(part.get('x'))); lms.append(float(part.get('y')))
+            lms.append(float(part.get('x')))
+            lms.append(float(part.get('y')))
+            
         if len(lms) != 136: continue
         lm_arr = np.array(lms, dtype=np.float32).reshape(-1, 2)
         
         X_data.append(face_resized / 255.0)
         y_data.append(lm_arr.flatten())
+        
+        # Augmentation
         flip_img, flip_lm = _augment_flip(face_resized, lm_arr)
         X_data.append(flip_img / 255.0)
         y_data.append(flip_lm.flatten())
