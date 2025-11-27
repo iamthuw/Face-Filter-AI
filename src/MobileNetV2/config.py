@@ -1,4 +1,3 @@
-# config.py
 import os
 
 # --- ĐƯỜNG DẪN DỮ LIỆU ---
