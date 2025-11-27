@@ -1,7 +1,7 @@
 import os
 
 # --- ĐƯỜNG DẪN DỮ LIỆU ---
-RAW_DATA_DIR = "/Users/nguyenbaothach/Study/AI/MobileNet/data/raw" 
+RAW_DATA_DIR = "data/raw" 
 
 PREPROCESSED_DIR = "data/preprocessed"
 TRAIN_XML_PATH = os.path.join(PREPROCESSED_DIR, 'train.xml')
