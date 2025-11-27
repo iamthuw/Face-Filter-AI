@@ -2,7 +2,6 @@
 import os
 
 # --- ĐƯỜNG DẪN DỮ LIỆU ---
-# HÃY SỬA ĐƯỜNG DẪN NÀY ĐẾN THƯ MỤC CHỨA ẢNH VÀ FILE .PTS CỦA BẠN
 RAW_DATA_DIR = "/Users/nguyenbaothach/Study/AI/MobileNet/data/raw" 
 
 PREPROCESSED_DIR = "data/preprocessed"
