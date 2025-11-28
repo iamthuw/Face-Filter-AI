@@ -7,17 +7,19 @@ from sklearn.model_selection import train_test_split
 
 # --- Các hằng số và ánh xạ cho Data Augmentation ---
 NUM_LANDMARKS = 68
+
 # Cặp điểm mốc đối xứng cho việc lật ảnh
 SYMMETRICAL_LANDMARKS = [
-    (0, 16), (1, 15), (2, 14), (3, 13), (4, 12), (5, 11), (6, 10), (7, 9), # Jawline
-    (17, 26), (18, 25), (19, 24), (20, 23), (21, 22), # Eyebrows
-    (36, 45), (37, 44), (38, 43), (39, 42), (40, 47), (41, 46), # Eyes
-    (31, 35), (32, 34), # Nose
-    (48, 54), (49, 53), (50, 52), # Outer Mouth
-    (55, 59), (56, 58), # Inner Mouth
-    (60, 64), (61, 63), # Inner lip
+    (0, 16), (1, 15), (2, 14), (3, 13), (4, 12), (5, 11), (6, 10), (7, 9),  # Jawline
+    (17, 26), (18, 25), (19, 24), (20, 23), (21, 22),                         # Eyebrows
+    (36, 45), (37, 44), (38, 43), (39, 42), (40, 47), (41, 46),               # Eyes
+    (31, 35), (32, 34),                                                         # Nose
+    (48, 54), (49, 53), (50, 52),                                              # Outer Mouth
+    (55, 59), (56, 58),                                                         # Inner Mouth
+    (60, 64), (61, 63),                                                         # Inner Lip
 ]
-# Tạo mảng ánh xạ để hoán đổi nhanh
+
+# Tạo mảng ánh xạ để hoán đổi nhanh khi lật ngang
 FLIP_MAP = list(range(NUM_LANDMARKS))
 for l, r in SYMMETRICAL_LANDMARKS:
     FLIP_MAP[l] = r
@@ -25,7 +27,16 @@ for l, r in SYMMETRICAL_LANDMARKS:
 
 def _parse_xml_annotation(xml_file_path):
     """
-    Hàm này đọc file XML và trích xuất thông tin ảnh, bounding box, và landmarks.
+    Đọc file XML và trích xuất thông tin ảnh, bounding box, và landmarks.
+    
+    Args:
+        xml_file_path (str): đường dẫn tới file XML annotation.
+    
+    Returns:
+        list: danh sách dict, mỗi dict chứa:
+            - 'filename': str, tên file ảnh
+            - 'bbox': list[int], bounding box [top, left, width, height]
+            - 'landmarks': np.array, shape=(NUM_LANDMARKS,2)
     """
     tree = ET.parse(xml_file_path)
     root = tree.getroot()
@@ -34,10 +45,10 @@ def _parse_xml_annotation(xml_file_path):
     
     for image_tag in root.find('images'):
         boxes = image_tag.findall('box')
-        if not boxes: continue
+        if not boxes:
+            continue
         
-        box = boxes[0] 
-        
+        box = boxes[0]  # Chỉ lấy box đầu tiên (nếu có nhiều box)
         landmarks = []
         for part_tag in box.findall('part'):
             x = float(part_tag.get('x'))
@@ -47,27 +58,41 @@ def _parse_xml_annotation(xml_file_path):
         if len(landmarks) == NUM_LANDMARKS:
             images_data.append({
                 'filename': image_tag.get('file'),
-                'bbox': [int(box.get('top')), int(box.get('left')), int(box.get('width')), int(box.get('height'))],
+                'bbox': [
+                    int(box.get('top')),
+                    int(box.get('left')),
+                    int(box.get('width')),
+                    int(box.get('height'))
+                ],
                 'landmarks': np.array(landmarks, dtype=np.float32)
             })
             
-    return images_data # Quan trọng: Phải trả về danh sách dữ liệu
+    return images_data
 
 def _augment_data(image, landmarks):
     """
-    Hàm này thực hiện tăng cường dữ liệu bằng cách lật ảnh.
+    Tăng cường dữ liệu bằng cách lật ngang ảnh và hoán đổi các landmark đối xứng.
+    
+    Args:
+        image (np.array): ảnh RGB, shape=(H,W,3)
+        landmarks (np.array): tọa độ landmark, shape=(NUM_LANDMARKS, 2)
+    
+    Returns:
+        tuple:
+            - list[np.array]: danh sách ảnh augmented (gồm ảnh gốc + lật)
+            - list[np.array]: danh sách landmarks tương ứng với ảnh augmented
     """
     augmented_images = [image]
     augmented_landmarks = [landmarks]
 
-    # Ảnh lật ngang (Mirror)
+    # Lật ngang ảnh
     flipped_image = cv2.flip(image, 1)
     
     flipped_landmarks = landmarks.copy()
     img_width = image.shape[1]
     flipped_landmarks[:, 0] = (img_width - 1) - flipped_landmarks[:, 0]
     
-    # Hoán đổi các cặp điểm đối xứng
+    # Hoán đổi các điểm đối xứng
     flipped_landmarks = flipped_landmarks[FLIP_MAP]
 
     augmented_images.append(flipped_image)
@@ -75,10 +100,30 @@ def _augment_data(image, landmarks):
 
     return augmented_images, augmented_landmarks
 
-# Dòng mới
 def load_and_preprocess_data(xml_file_path, data_root, image_size):
     """
-    Hàm chính để tải và xử lý toàn bộ dữ liệu.
+    Tải và xử lý toàn bộ dữ liệu ảnh + landmark.
+    
+    Các bước:
+        1. Đọc XML annotation
+        2. Crop khuôn mặt theo bounding box
+        3. Resize ảnh về image_size x image_size
+        4. Chuẩn hóa pixel [0,1]
+        5. Tăng cường dữ liệu (horizontal flip)
+        6. Chuẩn hóa landmark [0,1] và reshape
+        7. Chia train/test split 80/20
+    
+    Args:
+        xml_file_path (str): đường dẫn file XML annotation
+        data_root (str): thư mục gốc chứa ảnh
+        image_size (int): kích thước đầu ra của ảnh vuông (image_size x image_size)
+    
+    Returns:
+        tuple:
+            - X_train (np.array): ảnh train, shape=(N_train,H,W,3)
+            - X_val (np.array): ảnh validation
+            - y_train (np.array): landmarks train, shape=(N_train, NUM_LANDMARKS*2)
+            - y_val (np.array): landmarks validation
     """
     print("Loading and preprocessing data...")
     all_data = _parse_xml_annotation(xml_file_path)
@@ -87,13 +132,12 @@ def load_and_preprocess_data(xml_file_path, data_root, image_size):
 
     X_images = []
     y_landmarks = []
-    
 
     for item in all_data:
-        # Dòng mới (xóa dòng data_dir và sửa dòng image_path)
         image_path = os.path.join(data_root, item['filename'])
         image = cv2.imread(image_path)
-        if image is None: continue
+        if image is None: 
+            continue
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         top, left, width, height = item['bbox']
@@ -101,7 +145,8 @@ def load_and_preprocess_data(xml_file_path, data_root, image_size):
         bottom, right = min(image.shape[0], top + height), min(image.shape[1], left + width)
         
         cropped_face = image[top:bottom, left:right]
-        if cropped_face.shape[0] == 0 or cropped_face.shape[1] == 0: continue
+        if cropped_face.shape[0] == 0 or cropped_face.shape[1] == 0:
+            continue
             
         resized_face = cv2.resize(cropped_face, (image_size, image_size))
 
@@ -115,7 +160,7 @@ def load_and_preprocess_data(xml_file_path, data_root, image_size):
             X_images.append(aug_img)
             y_landmarks.append(aug_lm)
 
-    # Chuẩn hóa
+    # Chuẩn hóa ảnh và landmarks
     X_images = np.array(X_images, dtype=np.float32) / 255.0
     y_landmarks = np.array(y_landmarks, dtype=np.float32) / image_size
     y_landmarks = y_landmarks.reshape(-1, NUM_LANDMARKS * 2)
