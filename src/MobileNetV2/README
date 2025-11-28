@@ -1,1 +1,93 @@
+# Face Landmark Detection using MobileNetV2
 
+Dự án này xây dựng hệ thống nhận diện 68 điểm mốc trên khuôn mặt (Face Landmarks) sử dụng kiến trúc **MobileNetV2**. Hệ thống cung cấp quy trình trọn gói: từ xử lý dữ liệu thô, huấn luyện mô hình, đánh giá chi tiết đến ứng dụng thực tế trên Webcam.
+
+## 🌟 Tính năng nổi bật
+* **Lightweight Model:** Sử dụng MobileNetV2 tinh chỉnh, tối ưu hóa tốc độ để chạy tốt trên CPU.
+* **Robust Preprocessing:** Tích hợp kỹ thuật "Safe Crop" (thêm viền đen thay vì cắt mất ảnh) và Data Augmentation để tăng độ chính xác.
+* **Real-time Inference:** Demo nhận diện trực tiếp qua Webcam với thuật toán làm mượt chuyển động (Landmark Smoothing).
+* **Automated Pipeline:** Tự động tạo file XML dữ liệu và vẽ biểu đồ huấn luyện chi tiết.
+
+## 📂 Cấu trúc thư mục
+
+```text
+├── data/
+│   ├── raw/                 # Chứa ảnh gốc (.jpg/.png) và file nhãn (.pts)
+│   ├── preprocessed/        # Chứa file xml (train.xml, test.xml) sau khi xử lý
+├── models/                  # Lưu model (.h5) sau khi train
+├── plots/                   # Lưu biểu đồ Loss và MAE sau khi train
+├── config.py                # Cấu hình toàn bộ tham số (đường dẫn, hyperparams)
+├── preprocess.py            # Code xử lý dữ liệu, cắt mặt, chuẩn hóa
+├── model_architecture.py    # Định nghĩa kiến trúc mạng MobileNetV2
+├── train.py                 # Script huấn luyện chính
+├── evaluate.py              # Script đánh giá độ chính xác (MSE, MAE, R2)
+├── webcam_predict.py        # Chạy demo trên Webcam
+├── requirements.txt         # Các thư viện cần thiết
+└── README.md                # Tài liệu hướng dẫn
+
+⚙️ Cài đặt
+Clone dự án:
+
+Bash
+git clone [https://github.com/iamthuw/Face-Filter-AI.git](https://github.com/iamthuw/Face-Filter-AI.git)
+cd Face-Filter-AI/src/MobileNetV2
+Cài đặt thư viện: Khuyên dùng môi trường ảo (conda hoặc venv).
+
+Bash
+pip install -r requirements.txt
+🚀 Hướng dẫn sử dụng
+1. Chuẩn bị dữ liệu
+
+Tải bộ dữ liệu (ví dụ 300W hoặc dữ liệu riêng).
+
+Đặt toàn bộ ảnh .jpg/.png và file .pts tương ứng vào thư mục data/raw.
+
+Lưu ý: File ảnh và file .pts phải cùng tên.
+
+2. Huấn luyện mô hình (Train)
+
+Chạy lệnh sau để bắt đầu quá trình xử lý và huấn luyện:
+
+Bash
+python train.py
+Quá trình: Script sẽ tự động quét data, cắt mặt (Padding 25%), tạo file XML, load model và training.
+
+Output: Model được lưu tại models/landmark_detector.h5 và biểu đồ tại plots/training_results.png.
+
+3. Đánh giá (Evaluate)
+
+Để xem các chỉ số chính xác (MSE, MAE, R2 Score) trên tập kiểm thử (Test set):
+
+Bash
+python evaluate.py
+4. Chạy Demo Webcam
+
+Sử dụng model đã train để nhận diện khuôn mặt thực tế:
+
+Bash
+python webcam_predict.py
+Nhấn phím q để thoát chương trình.
+
+🔧 Tùy chỉnh cấu hình (Configuration)
+Bạn có thể thay đổi các tham số trong file config.py:
+
+INPUT_WIDTH, INPUT_HEIGHT: Kích thước ảnh đầu vào (Mặc định: 128x128).
+
+BATCH_SIZE: Kích thước batch khi train (Mặc định: 32).
+
+NUM_EPOCHS: Số vòng lặp huấn luyện (Mặc định: 100).
+
+WEBCAM_ID: Đổi ID camera (0 hoặc 1) nếu máy có nhiều cam.
+
+Ngoài ra, trong webcam_predict.py có thể tinh chỉnh vùng hiển thị:
+
+PADDING_RATIO: Tăng giảm độ rộng khung bao quanh mặt.
+
+Y_OFFSET_RATIO: Dịch chuyển khung nhìn lên/xuống để lấy trọn cằm.
+
+📊 Kết quả mẫu
+Input: Ảnh khuôn mặt cắt từ Haar Cascade.
+
+Output: 136 giá trị tọa độ (tương ứng 68 điểm landmarks).
+
+Loss Function: Mean Squared Error (MSE).
