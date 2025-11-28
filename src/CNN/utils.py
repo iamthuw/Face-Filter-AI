@@ -1,34 +1,31 @@
-<<<<<<< HEAD
 # utils.py
 import matplotlib.pyplot as plt
 
 def plot_training_history(history):
     """
-    Vẽ đồ thị loss của quá trình huấn luyện.
+    Vẽ đồ thị lịch sử của hàm mất mát (loss) trong quá trình huấn luyện
+    trên cả tập huấn luyện (Train Loss) và tập kiểm tra/đánh giá (Validation Loss).
+    Returns:
+        None: Hàm hiển thị đồ thị trực tiếp bằng plt.show().
     """
-    plt.figure(figsize=(10, 5))
+    # 📝 Tạo một figure mới để đảm bảo kích thước đồ thị lớn và dễ nhìn.
+    plt.figure(figsize=(10, 5)) 
+    
+    # Lấy giá trị loss từ tập huấn luyện
     plt.plot(history.history['loss'], label='Train Loss')
+    # Lấy giá trị loss từ tập kiểm tra (validation)
     plt.plot(history.history['val_loss'], label='Validation Loss')
-    plt.title('Model Loss')
+    
+    # Đặt tiêu đề và nhãn cho đồ thị
+    plt.title('Model Loss (MSE)')
     plt.xlabel('Epoch')
-    plt.ylabel('Loss (MSE)')
+    # 📝 Loss (MSE): Đơn vị là Mean Squared Error, hàm mất mát được sử dụng trong train.py
+    plt.ylabel('Loss (MSE)') 
+    
+    # Hiển thị chú giải (Legend) để phân biệt hai đường đồ thị
     plt.legend()
+    # Thêm lưới (Grid) để dễ dàng đọc và so sánh các giá trị
     plt.grid(True)
-=======
-# utils.py
-import matplotlib.pyplot as plt
-
-def plot_training_history(history):
-    """
-    Vẽ đồ thị loss của quá trình huấn luyện.
-    """
-    plt.figure(figsize=(10, 5))
-    plt.plot(history.history['loss'], label='Train Loss')
-    plt.plot(history.history['val_loss'], label='Validation Loss')
-    plt.title('Model Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss (MSE)')
-    plt.legend()
-    plt.grid(True)
->>>>>>> 31415197f1766290a3825cbc67a61045a6922f0a
+    
+    # 📝 Hiển thị đồ thị
     plt.show()
