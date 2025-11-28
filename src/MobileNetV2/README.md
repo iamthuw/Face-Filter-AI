@@ -24,15 +24,21 @@ Dự án này xây dựng hệ thống nhận diện 68 điểm mốc trên khu�
 ├── webcam_predict.py        # Chạy demo trên Webcam
 ├── requirements.txt         # Các thư viện cần thiết
 └── README.md                # Tài liệu hướng dẫn
+```
 
-⚙️ Cài đặt
-Clone dự án:
 
+## ⚙️ Cài đặt
+
+**Clone dự án:**
+```bash
 git clone [https://github.com/iamthuw/Face-Filter-AI.git](https://github.com/iamthuw/Face-Filter-AI.git)
 cd Face-Filter-AI/src/MobileNetV2
+```
 Cài đặt thư viện: Khuyên dùng môi trường ảo (conda hoặc venv).
-
+``` bash
 pip install -r requirements.txt
+```
+
 🚀 Hướng dẫn sử dụng
 1. Chuẩn bị dữ liệu
 
@@ -46,26 +52,30 @@ Lưu ý: File ảnh và file .pts phải cùng tên.
 
 Chạy lệnh sau để bắt đầu quá trình xử lý và huấn luyện:
 
+```bash
 python train.py
+```
+
 Quá trình: Script sẽ tự động quét data, cắt mặt (Padding 25%), tạo file XML, load model và training.
 
-Output: Model được lưu tại models/landmark_detector.h5 và biểu đồ tại plots/training_results.png.
+Output: Model được lưu tại `models/landmark_detector.h5` và biểu đồ tại `plots/training_results.png`.
 
 3. Đánh giá (Evaluate)
 
 Để xem các chỉ số chính xác (MSE, MAE, R2 Score) trên tập kiểm thử (Test set):
-
-
+```básh
 python evaluate.py
+```
 4. Chạy Demo Webcam
 
 Sử dụng model đã train để nhận diện khuôn mặt thực tế:
-
+```bash
 python webcam_predict.py
-Nhấn phím q để thoát chương trình.
+```
+Nhấn phím `q` để thoát chương trình.
 
 🔧 Tùy chỉnh cấu hình (Configuration)
-Bạn có thể thay đổi các tham số trong file config.py:
+Bạn có thể thay đổi các tham số trong file `config.py`:
 
 INPUT_WIDTH, INPUT_HEIGHT: Kích thước ảnh đầu vào (Mặc định: 128x128).
 
