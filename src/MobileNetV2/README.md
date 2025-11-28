@@ -22,7 +22,6 @@ Dự án này xây dựng hệ thống nhận diện 68 điểm mốc trên khu�
 ├── train.py                 # Script huấn luyện chính
 ├── evaluate.py              # Script đánh giá độ chính xác (MSE, MAE, R2)
 ├── webcam_predict.py        # Chạy demo trên Webcam
-├── requirements.txt         # Các thư viện cần thiết
 └── README.md                # Tài liệu hướng dẫn
 ```
 
