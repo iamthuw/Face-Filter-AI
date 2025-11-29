@@ -45,15 +45,8 @@ def evaluate_on_test():
     print("[INFO] Đang thực hiện dự đoán...")
     y_pred = model.predict(X_test)
 
-    # 4. Xử lý dữ liệu trước khi tính toán (Flatten)
-    # Logic phức tạp: Các hàm đánh giá của Scikit-learn (sklearn) yêu cầu mảng 2D (samples, features).
-    # Nếu mô hình trả về mảng 3D (Batch, Landmarks, Coords - ví dụ: 32, 68, 2), ta phải duỗi (flatten) nó thành (Batch, Features - ví dụ: 32, 136).
-    if y_test.ndim > 2:
-        y_test = y_test.reshape(y_test.shape[0], -1) # -1 tự động tính toán kích thước còn lại (68*2=136)
-    if y_pred.ndim > 2:
-        y_pred = y_pred.reshape(y_pred.shape[0], -1)
 
-    # 5. Tính toán các chỉ số
+    # 4. Tính toán các chỉ số
     # 📝 MSE (Mean Squared Error): Sai số bình phương trung bình. Ưu tiên phạt nặng sai số lớn.
     mse = mean_squared_error(y_test, y_pred)
     # 📝 MAE (Mean Absolute Error): Sai lệch tuyệt đối trung bình. Dễ diễn giải, ít nhạy cảm với outliers hơn MSE.
@@ -61,7 +54,7 @@ def evaluate_on_test():
     # 📝 R2 Score (Coefficient of Determination): Đo lường mức độ phù hợp của mô hình (tỷ lệ phương sai được giải thích). 1.0 là hoàn hảo.
     r2 = r2_score(y_test, y_pred)
 
-    # 6. In kết quả
+    # 5. In kết quả
     print("\n" + "="*30)
     print("KẾT QUẢ ĐÁNH GIÁ TRÊN TẬP TEST")
     print("="*30)
