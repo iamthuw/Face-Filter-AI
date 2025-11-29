@@ -13,6 +13,7 @@ Module này triển khai một **Vision Transformer (ViT)** để giải quyết
 
 Dự án được tổ chức như sau:
 
+```text
 ViT/
 ├── saved_model/
 │ └── facial_landmark_detector_vit.h5 # Mô hình ViT đã huấn luyện
@@ -24,7 +25,7 @@ ViT/
 ├── train.py # Script huấn luyện mô hình
 ├── utils.py # Hàm tiện ích: vẽ đồ thị, tính loss, metric
 └── README.md # Tệp hướng dẫn này
-
+```
 
 ---
 
@@ -41,11 +42,11 @@ Cài đặt tất cả thư viện Python cần thiết, bao gồm TensorFlow, K
 
 ```bash
 pip install -r requirements.txt
+```
 
 
-
-4. Hướng dẫn sử dụng
-4.1. Huấn luyện Mô hình
+# 4. Hướng dẫn sử dụng
+### 4.1. Huấn luyện Mô hình
 
 Chạy script train.py để huấn luyện mô hình ViT. Script sẽ thực hiện:
 
@@ -56,12 +57,12 @@ Xây dựng mô hình ViT từ model.py.
 Huấn luyện mô hình và lưu phiên bản tốt nhất vào saved_model/facial_landmark_detector_vit.h5.
 python train.py
 
-4.2. Đánh giá Mô hình
+### 4.2. Đánh giá Mô hình
 
 Sử dụng evaluate_model.py để đánh giá mô hình trên tập kiểm tra:
 python evaluate_model.py
 Kết quả sẽ hiển thị MSE, MAE, R2-square trên tập test
-4.3. Dự đoán Từ Webcam
+### 4.3. Dự đoán Từ Webcam
 
 Chạy predict_webcam.py để dự đoán điểm mốc trên khuôn mặt trực tiếp từ webcam:
 
@@ -69,7 +70,7 @@ python predict_webcam.py
 
 
 Ứng dụng sẽ hiển thị ảnh webcam với các điểm mốc được đánh dấu trực tiếp.
-5. Tiện ích khác
+# 5. Tiện ích khác
 
 File utils.py cung cấp các hàm:
 
@@ -79,7 +80,7 @@ Tính toán các chỉ số đánh giá
 
 Hiển thị ảnh với điểm mốc
 
-6. Ghi chú
+# 6. Ghi chú
 
 Mô hình sử dụng Vision Transformer nên cần GPU để huấn luyện hiệu quả.
 
