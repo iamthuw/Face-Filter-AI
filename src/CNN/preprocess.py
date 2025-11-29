@@ -100,7 +100,7 @@ def _augment_data(image, landmarks):
 
     return augmented_images, augmented_landmarks
 
-def load_and_preprocess_data(xml_file_path, data_root, image_size):
+def load_and_preprocess_data(xml_file_path, data_root, image_size, test_split=0.2):
     """
     Tải và xử lý toàn bộ dữ liệu ảnh + landmark.
     
@@ -166,4 +166,8 @@ def load_and_preprocess_data(xml_file_path, data_root, image_size):
     y_landmarks = y_landmarks.reshape(-1, NUM_LANDMARKS * 2)
 
     print(f"Total processed samples: {len(X_images)}")
-    return train_test_split(X_images, y_landmarks, test_size=0.2, random_state=42)
+    if test_split > 0:
+        return train_test_split(X_images, y_landmarks, test_size=test_split, random_state=42)
+    else:
+        # Nếu test_split == 0, trả về toàn bộ dữ liệu mà không chia tách
+        return X_images, None, y_landmarks, None # Trả về None cho X_val, y_val

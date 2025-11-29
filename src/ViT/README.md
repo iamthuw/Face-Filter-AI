@@ -15,6 +15,7 @@ Dự án được tổ chức như sau:
 
 ```text
 ViT/
+├── ibug_300W_large_face_landmark_dataset/ # Thư mục chứa dữ liệu đầu vào (cần tải về)
 ├── saved_model/
 │ └── facial_landmark_detector_vit.h5 # Mô hình ViT đã huấn luyện
 │

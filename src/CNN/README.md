@@ -26,7 +26,7 @@ Dự án được tổ chức như sau:
 │       ├── train.py                  # Script Huấn luyện mô hình
 │       ├── evaluate.py               # Script Đánh giá mô hình
 │       ├── utils.py                  # Các hàm tiện ích: Vẽ đồ thị lịch sử hàm mất mát (loss)
-│       └── requirements.txt          # Thư viện cần thiết
+├── requirements.txt #Thư viện sử dụng
 ```
 ### 3.  Cài đặt (Installation)
 
@@ -39,16 +39,22 @@ Vui lòng tải toàn bộ thư mục dữ liệu ảnh và tệp nhãn tương 
 
 Sử dụng tệp `requirements.txt` để cài đặt tất cả các thư viện Python cần thiết cho dự án (bao gồm **TensorFlow**, **Keras**, **OpenCV**, v.v.).
 ```bash
-pip install -r src/CNN/requirements.txt
+pip install -r requirements.txt
 ```
 ### 4. 🏃 Hướng dẫn Sử dụng
 
 #### 4.1. Huấn luyện Mô hình
 
 Chạy script **`train.py`** để bắt đầu quá trình huấn luyện mô hình **CNN**. Script sẽ tự động:
-* Sử dụng các hàm tiền xử lý từ `utils.py` để tải và xử lý dữ liệu từ thư mục `./ibug_300W_large_face_landmark_dataset/`.
+* Sử dụng các hàm tiền xử lý từ `preprocess.py` để tải và xử lý dữ liệu từ thư mục `./ibug_300W_large_face_landmark_dataset/`.
 * Xây dựng mô hình theo kiến trúc đã định nghĩa trong `model.py`.
 * Bắt đầu quá trình huấn luyện và lưu mô hình tốt nhất vào thư mục `saved_model/`.
 
 ```bash
 python src/CNN/train.py
+```
+#### 4.2. Đánh giá sai số
+```bash
+python src/CNN/evaluate.py
+```
+

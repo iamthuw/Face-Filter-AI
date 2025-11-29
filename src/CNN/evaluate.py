@@ -1,6 +1,7 @@
 # evaluate.py
 import os
 import numpy as np
+import time
 import tensorflow as tf
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from tensorflow.keras.models import load_model
@@ -37,23 +38,18 @@ def evaluate_on_test():
     print(f"[INFO] Đang load dữ liệu test từ: {TEST_XML_FILE}...")
     
     # 📝 load_and_preprocess_data: Tải ảnh (X) và tọa độ (y). Chỉ cần tập test, bỏ qua các giá trị trả về khác.
-    X_test, _, y_test, _ = load_and_preprocess_data(TEST_XML_FILE, DATA_ROOT, IMAGE_SIZE)
+    X_test, _, y_test, _ = load_and_preprocess_data(TEST_XML_FILE, DATA_ROOT, IMAGE_SIZE,0)
 
     print(f"[INFO] Số lượng mẫu test: {len(X_test)}")
 
     # 3. Dự đoán (Predict)
     print("[INFO] Đang thực hiện dự đoán...")
+    start_time = time.time()
     y_pred = model.predict(X_test)
+    end_time = time.time()
+    prediction_time = end_time - start_time
 
-    # 4. Xử lý dữ liệu trước khi tính toán (Flatten)
-    # Logic phức tạp: Các hàm đánh giá của Scikit-learn (sklearn) yêu cầu mảng 2D (samples, features).
-    # Nếu mô hình trả về mảng 3D (Batch, Landmarks, Coords - ví dụ: 32, 68, 2), ta phải duỗi (flatten) nó thành (Batch, Features - ví dụ: 32, 136).
-    if y_test.ndim > 2:
-        y_test = y_test.reshape(y_test.shape[0], -1) # -1 tự động tính toán kích thước còn lại (68*2=136)
-    if y_pred.ndim > 2:
-        y_pred = y_pred.reshape(y_pred.shape[0], -1)
-
-    # 5. Tính toán các chỉ số
+    # 4. Tính toán các chỉ số
     # 📝 MSE (Mean Squared Error): Sai số bình phương trung bình. Ưu tiên phạt nặng sai số lớn.
     mse = mean_squared_error(y_test, y_pred)
     # 📝 MAE (Mean Absolute Error): Sai lệch tuyệt đối trung bình. Dễ diễn giải, ít nhạy cảm với outliers hơn MSE.
@@ -61,13 +57,14 @@ def evaluate_on_test():
     # 📝 R2 Score (Coefficient of Determination): Đo lường mức độ phù hợp của mô hình (tỷ lệ phương sai được giải thích). 1.0 là hoàn hảo.
     r2 = r2_score(y_test, y_pred)
 
-    # 6. In kết quả
+    # 5. In kết quả
     print("\n" + "="*30)
     print("KẾT QUẢ ĐÁNH GIÁ TRÊN TẬP TEST")
     print("="*30)
     print(f"MSE (Sai số bình phương trung bình): {mse:.4f}")
     print(f"MAE (Sai lệch trung bình - Pixels): {mae:.4f}")
     print(f"R2 Score (Độ chính xác mô hình):     {r2:.4f} ({r2*100:.2f}%)")
+    print(f"Total prediction time:           {prediction_time:.4f} seconds")
     print("="*30)
 
     # Đánh giá sơ bộ bằng lời
