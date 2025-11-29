@@ -11,6 +11,7 @@ Dự án này xây dựng hệ thống nhận diện 68 điểm mốc trên khu�
 ## 📂 Cấu trúc thư mục
 
 ```text
+MobileNetV2/
 ├── data/
 │   ├── raw/                 # Chứa ảnh gốc (.jpg/.png) và file nhãn (.pts)
 │   ├── preprocessed/        # Chứa file xml (train.xml, test.xml) sau khi xử lý
