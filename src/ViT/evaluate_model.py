@@ -1,3 +1,4 @@
+
 """
 evaluate_model.py
 
@@ -14,13 +15,14 @@ Yêu cầu:
     - Thư mục dữ liệu ibug_300W_large_face_landmark_dataset tồn tại đầy đủ
 
 Kết quả:
-    In ra các chỉ số MSE, MAE, R² và số lượng mẫu test.
+    In ra các chỉ số MSE, MAE, R², số lượng mẫu test và thời gian dự đoán.
 """
 import os
 import numpy as np
 import tensorflow as tf
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from tensorflow.keras import layers # Import layers để định nghĩa lớp tùy chỉnh
+import time  # Thêm module time để đo thời gian dự đoán
 
 # Import các hằng số và hàm cần thiết
 from preprocess import load_and_preprocess_data, NUM_LANDMARKS 
@@ -123,13 +125,7 @@ def evaluate_model():
     """
     Hàm này dùng để tải mô hình đã huấn luyện, thực hiện dự đoán trên toàn bộ
     tập dữ liệu kiểm tra (TEST.xml), sau đó tính và in ra các chỉ số đánh giá gồm:
-    MSE, MAE và R2.
-
-    Các bước thực hiện:
-    1. Tải và tiền xử lý toàn bộ dữ liệu test.
-    2. Tải mô hình đã huấn luyện (kèm custom layers) bằng compile=False.
-    3. Thực hiện dự đoán và tính toán các chỉ số.
-    4. In kết quả ra màn hình.
+    MSE, MAE, R2 và thời gian dự đoán.
 
     Returns:
         None: Hàm không trả về giá trị, chỉ in kết quả đánh giá ra console.
@@ -169,9 +165,13 @@ def evaluate_model():
 
     # --- 3. Dự đoán và Tính toán chỉ số ---
     print("\n--- 3. Making Predictions and Calculating Metrics ---")
-    # Chúng ta vẫn có thể dùng mô hình để dự đoán ngay cả khi compile=False
+    
+    # Bắt đầu đo thời gian dự đoán
+    start_time = time.time()
     y_pred = model.predict(X_test_full, verbose=0) 
-
+    end_time = time.time()
+    prediction_time = end_time - start_time
+    
     # Làm phẳng mảng để tính toán chỉ số
     y_true_flat = y_test_full.flatten()
     y_pred_flat = y_pred.flatten()
@@ -189,8 +189,9 @@ def evaluate_model():
     print(f"Mean Squared Error (MSE):       {mse:.6f}")
     print(f"Mean Absolute Error (MAE):      {mae:.6f}")
     print(f"R-squared Score (R²):           {r2:.4f}")
+    print(f"Total prediction time:           {prediction_time:.4f} seconds")
     print("==============================================")
 
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     evaluate_model()
