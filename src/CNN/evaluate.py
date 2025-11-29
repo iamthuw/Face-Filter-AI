@@ -1,6 +1,7 @@
 # evaluate.py
 import os
 import numpy as np
+import time
 import tensorflow as tf
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from tensorflow.keras.models import load_model
@@ -37,14 +38,16 @@ def evaluate_on_test():
     print(f"[INFO] Đang load dữ liệu test từ: {TEST_XML_FILE}...")
     
     # 📝 load_and_preprocess_data: Tải ảnh (X) và tọa độ (y). Chỉ cần tập test, bỏ qua các giá trị trả về khác.
-    X_test, _, y_test, _ = load_and_preprocess_data(TEST_XML_FILE, DATA_ROOT, IMAGE_SIZE)
+    X_test, _, y_test, _ = load_and_preprocess_data(TEST_XML_FILE, DATA_ROOT, IMAGE_SIZE,0)
 
     print(f"[INFO] Số lượng mẫu test: {len(X_test)}")
 
     # 3. Dự đoán (Predict)
     print("[INFO] Đang thực hiện dự đoán...")
+    start_time = time.time()
     y_pred = model.predict(X_test)
-
+    end_time = time.time()
+    prediction_time = end_time - start_time
 
     # 4. Tính toán các chỉ số
     # 📝 MSE (Mean Squared Error): Sai số bình phương trung bình. Ưu tiên phạt nặng sai số lớn.
@@ -61,6 +64,7 @@ def evaluate_on_test():
     print(f"MSE (Sai số bình phương trung bình): {mse:.4f}")
     print(f"MAE (Sai lệch trung bình - Pixels): {mae:.4f}")
     print(f"R2 Score (Độ chính xác mô hình):     {r2:.4f} ({r2*100:.2f}%)")
+    print(f"Total prediction time:           {prediction_time:.4f} seconds")
     print("="*30)
 
     # Đánh giá sơ bộ bằng lời
