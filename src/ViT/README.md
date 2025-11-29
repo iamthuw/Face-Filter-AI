@@ -66,7 +66,9 @@ Kết quả sẽ hiển thị MSE, MAE, R2-square trên tập test
 
 Chạy predict_webcam.py để dự đoán điểm mốc trên khuôn mặt trực tiếp từ webcam:
 
+```bash
 python predict_webcam.py
+```
 
 
 Ứng dụng sẽ hiển thị ảnh webcam với các điểm mốc được đánh dấu trực tiếp.
