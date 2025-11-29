@@ -100,6 +100,14 @@ def _augment_data(image, landmarks):
 def load_and_preprocess_data(xml_file_path, data_root, image_size, test_split=0.2, augment=True):
     """
     Hàm chính để tải, tiền xử lý và tăng cường toàn bộ dữ liệu.
+
+    Các bước thực hiện:
+        1. Đọc thông tin ảnh và điểm landmark từ file XML.
+        2. Crop khuôn mặt dựa trên bounding box.
+        3. Resize ảnh về kích thước chuẩn.
+        4. Chuyển đổi và chuẩn hóa tọa độ landmark.
+        5. (Tuỳ chọn) Tăng cường dữ liệu bằng lật ảnh.
+        6. Chia dữ liệu thành tập train và validation.
     
     Args:
         xml_file_path (str): Đường dẫn đến file XML chú thích (train.xml hoặc test.xml).

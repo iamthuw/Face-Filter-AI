@@ -1,4 +1,21 @@
-# evaluate_model.py (Đã sửa lỗi để tải mô hình cũ mà không cần compile)
+"""
+evaluate_model.py
+
+Chức năng:
+    Script này dùng để tải mô hình landmark đã huấn luyện, 
+    chạy dự đoán trên toàn bộ tập TEST.xml và tính các chỉ số hiệu suất
+    như MSE, MAE, R².
+
+Chạy file:
+    python evaluate_model.py
+
+Yêu cầu:
+    - Đã có file mô hình .h5 trong thư mục saved_model/
+    - Thư mục dữ liệu ibug_300W_large_face_landmark_dataset tồn tại đầy đủ
+
+Kết quả:
+    In ra các chỉ số MSE, MAE, R² và số lượng mẫu test.
+"""
 import os
 import numpy as np
 import tensorflow as tf
@@ -18,13 +35,23 @@ MODEL_LOAD_PATH = 'saved_model/facial_landmark_detector_vit.h5'
 PATCH_SIZE = 16 
 PROJECTION_DIM = 64
 
-# ====================================================================
-# ĐỊNH NGHĨA LẠI CÁC LỚP CUSTOM LAYER CỦA VIT (Đã sửa tên tham số)
-# ====================================================================
-# Sửa lỗi tham số Patches/PatchEncoder để khớp với cấu hình đã lưu
-# Chúng ta giả định mô hình được lưu với tên tham số đơn giản ('patch_size', 'num_patches')
-
 class Patches(layers.Layer):
+    """
+    Lớp custom layer dùng để chia ảnh đầu vào thành các patch (ô vuông nhỏ).
+
+    Tham số:
+        patch_size (int): Kích thước mỗi patch (ví dụ 16 nghĩa là 16x16 pixel).
+
+    Phương thức chính:
+        call(images): Chia ảnh thành các patch.
+        get_config(): Trả về cấu hình để lưu/khôi phục mô hình.
+
+    Input shape:
+        (batch_size, height, width, channels)
+
+    Output shape:
+        (batch_size, số_lượng_patch, patch_dims)
+    """
     def __init__(self, patch_size, **kwargs):
         super(Patches, self).__init__(**kwargs)
         self.patch_size = patch_size
@@ -48,6 +75,25 @@ class Patches(layers.Layer):
         return config
 
 class PatchEncoder(layers.Layer):
+    """
+    Lớp mã hóa các patch bằng cách:
+    - Chiếu (project) mỗi patch vào vector có kích thước projection_dim.
+    - Thêm embedding vị trí (positional encoding) để mô hình biết thứ tự các patch.
+
+    Tham số:
+        num_patches (int): Tổng số patch của một ảnh.
+        projection_dim (int): Số chiều sau khi chiếu (vector đặc trưng mỗi patch).
+
+    Phương thức:
+        call(patch): Mã hóa patch (project + position embedding).
+        get_config(): Cấu hình để lưu/khôi phục lớp.
+
+    Input shape:
+        (batch_size, num_patches, patch_dims)
+
+    Output shape:
+        (batch_size, num_patches, projection_dim)
+    """
     def __init__(self, num_patches, projection_dim, **kwargs):
         super(PatchEncoder, self).__init__(**kwargs)
         self.num_patches = num_patches
@@ -75,7 +121,18 @@ class PatchEncoder(layers.Layer):
 
 def evaluate_model():
     """
-    Tải mô hình, đánh giá trên TOÀN BỘ tập kiểm tra TEST.xml và in ra các chỉ số hiệu suất.
+    Hàm này dùng để tải mô hình đã huấn luyện, thực hiện dự đoán trên toàn bộ
+    tập dữ liệu kiểm tra (TEST.xml), sau đó tính và in ra các chỉ số đánh giá gồm:
+    MSE, MAE và R2.
+
+    Các bước thực hiện:
+    1. Tải và tiền xử lý toàn bộ dữ liệu test.
+    2. Tải mô hình đã huấn luyện (kèm custom layers) bằng compile=False.
+    3. Thực hiện dự đoán và tính toán các chỉ số.
+    4. In kết quả ra màn hình.
+
+    Returns:
+        None: Hàm không trả về giá trị, chỉ in kết quả đánh giá ra console.
     """
     print("--- 1. Loading Data for FINAL Evaluation ---")
     
@@ -126,7 +183,7 @@ def evaluate_model():
 
     # --- 4. In kết quả ---
     print("\n==============================================")
-    print("           📊 FINAL EVALUATION RESULTS 📊")
+    print("            FINAL EVALUATION RESULTS ")
     print(f"       (Tested on: {os.path.basename(TEST_XML_FILE)} - Full Set)")
     print("==============================================")
     print(f"Mean Squared Error (MSE):       {mse:.6f}")

@@ -13,11 +13,22 @@ NUM_LANDMARKS = 68
 PATCH_SIZE = 16 
 PROJECTION_DIM = 64 
 
-# ====================================================================
-# ĐỊNH NGHĨA LẠI CÁC LỚP CUSTOM LAYER CỦA VIT (Đã sửa tên tham số)
-# ====================================================================
-
 class Patches(layers.Layer):
+    """
+    Custom Layer dùng để chia ảnh thành các patch con không chồng lấp,
+    phục vụ cho kiến trúc Vision Transformer.
+
+    Thuộc về Stage 1: Patch Embedding.
+
+    Args:
+        patch_size (int): Kích thước mỗi patch (patch_size x patch_size).
+
+    Input:
+        Tensor shape (batch_size, height, width, channels)
+
+    Output:
+        Tensor shape (batch_size, num_patches, patch_dim)
+    """
     # Sửa: Đổi 'patch_size_val' thành 'patch_size'
     def __init__(self, patch_size, **kwargs): 
         super(Patches, self).__init__(**kwargs)
@@ -43,7 +54,21 @@ class Patches(layers.Layer):
         return config
 
 class PatchEncoder(layers.Layer):
-    # Sửa: Đổi tên tham số để khớp với mô hình đã lưu
+    """
+    Custom Layer mã hóa các patch bằng Dense projection + Position embedding.
+
+    Thuộc Stage 2: Linear Embedding + Positional Encoding.
+
+    Args:
+        num_patches (int): Tổng số lượng patch sau khi chia ảnh.
+        projection_dim (int): Số chiều embedding (transformer dimension).
+
+    Input:
+        Tensor shape (batch_size, num_patches, patch_dim)
+
+    Output:
+        Tensor shape (batch_size, num_patches, projection_dim)
+    """
     def __init__(self, num_patches, projection_dim, **kwargs): 
         super(PatchEncoder, self).__init__(**kwargs)
         self.num_patches = num_patches
@@ -71,7 +96,23 @@ class PatchEncoder(layers.Layer):
 # --- END CUSTOM LAYER DEFINITIONS ---
 
 def predict_webcam():
-    # ... (Phần tải mô hình và logic webcam giữ nguyên)
+    """
+    Chạy webcam real-time để phát hiện khuôn mặt bằng dlib và dự đoán 68 điểm Landmark
+    sử dụng mô hình Vision Transformer đã huấn luyện.
+
+    Quy trình:
+    1. Load mô hình ViT với custom layers (Patches, PatchEncoder).
+    2. Sử dụng dlib để phát hiện bounding box khuôn mặt.
+    3. Cắt vùng mặt, resize và chuẩn hóa như lúc train.
+    4. Đưa vào mô hình để dự đoán landmarks (tọa độ chuẩn hóa).
+    5. Chuyển tọa độ normalized back → tọa độ thật ở ảnh gốc.
+    6. Vẽ các landmark lên khung hình webcam.
+
+    Returns:
+        None
+    """
+
+
     print("[INFO] Loading facial landmark predictor (ViT)...")
     
     CUSTOM_OBJECTS = {

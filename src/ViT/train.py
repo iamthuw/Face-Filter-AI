@@ -1,4 +1,25 @@
 # train.py (Script Huấn luyện Mô hình ViT)
+# Script huấn luyện mô hình Vision Transformer (ViT) cho bài toán Landmark Detection.
+
+# Chức năng chính:
+# ----------------
+# 1. Tải và tiền xử lý dữ liệu landmark (ảnh & tọa độ) từ file XML.
+# 2. Xây dựng mô hình ViT bằng hàm build_landmark_model().
+# 3. Biên dịch mô hình với optimizer, loss function phù hợp (Adam, MSE).
+# 4. Huấn luyện mô hình với EarlyStopping và ModelCheckpoint để tránh overfitting.
+# 5. Lưu mô hình tốt nhất và trực quan hóa lịch sử huấn luyện (loss, val_loss).
+
+# Input:
+# ------
+# - labels_ibug_300W_train.xml : File XML chứa đường dẫn ảnh và tọa độ landmark.
+# - Thư mục chứa dataset ảnh gốc.
+
+# Output:
+# -------
+# - File mô hình tốt nhất (.h5) lưu trong MODEL_SAVE_PATH.
+# - Biểu đồ training/validation loss .
+
+
 import os
 import tensorflow as tf
 from preprocess import load_and_preprocess_data, NUM_LANDMARKS
