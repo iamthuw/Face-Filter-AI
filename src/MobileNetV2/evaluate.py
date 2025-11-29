@@ -16,6 +16,7 @@ Yêu cầu:
     - File dữ liệu test (.xml) phải tồn tại tại TEST_XML_PATH.
 """
 import os
+import time
 import tensorflow as tf
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -40,8 +41,18 @@ def evaluate():
         None: Kết quả được in trực tiếp ra màn hình console.
     """
     # 1. Kiểm tra file mô hình
-    # Nếu chưa train xong hoặc file bị xóa, dừng chương trình để tránh lỗi crash
-    if not os.path.exists(MODEL_SAVE_PATH): return
+    # Ưu tiên dùng file nhẹ (inference) vì nó giống với môi trường thực tế
+    inference_path = os.path.join(MODEL_DIR, "landmark_detector_inference.h5")
+    
+    if os.path.exists(inference_path):
+        model_path_to_load = inference_path
+        print(f"[INFO] Đang load mô hình NHẸ (Inference) từ: {model_path_to_load}")
+    elif os.path.exists(MODEL_SAVE_PATH):
+        model_path_to_load = MODEL_SAVE_PATH
+        print(f"[INFO] Không thấy mô hình nhẹ. Đang load mô hình GỐC từ: {model_path_to_load}")
+    else:
+        print(f"[ERROR] Không tìm thấy file mô hình nào tại {MODEL_DIR}. Hãy chạy train.py trước.")
+        return
     
     # 2. Tải dữ liệu Test
     # Gọi hàm từ module preprocess để đọc XML, cắt ảnh, resize và chuẩn hóa
@@ -55,17 +66,21 @@ def evaluate():
     custom_objects = {'mse': tf.keras.metrics.MeanSquaredError, 'mae': tf.keras.metrics.MeanAbsoluteError}
     # compile=False: Chỉ load trọng số và kiến trúc để dự đoán, không cần load optimizer (Adam)
     # Giúp load nhanh hơn và tránh lỗi phiên bản optimizer
-    model = tf.keras.models.load_model(MODEL_SAVE_PATH, custom_objects=custom_objects, compile=False)
+    model = tf.keras.models.load_model(model_path_to_load, custom_objects=custom_objects, compile=False)
     
-    # 4. Dự đoán (Inference)   
+    # 4. Dự đoán (Inference)  & ĐO THỜI GIAN
+    start_time = time.time()
     y_pred = model.predict(X_test)
+    end_time = time.time()
     
     # 5. Tính toán Metric
     # Sử dụng thư viện sklearn để tính toán các chỉ số thống kê
+    total_time = end_time - start_time
     mse = mean_squared_error(y_test, y_pred)
     mae = mean_absolute_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
     
+    print(f"Tổng thời gian chạy:{total_time:.4f} giây")
     print(f"MSE: {mse:.5f}")
     print(f"MAE: {mae:.5f}")
     print(f"R2 Score: {r2:.4f}")
