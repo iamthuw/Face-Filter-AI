@@ -1,17 +1,26 @@
-# 🏷️ Tên nhóm
-**Nhóm 10**
+# 🏷️ Tên nhóm: **Nhóm 10**
 
-# 📝 Tên dự án
-**Face Filter AI**
+# 📝 Tên dự án: **Face-Filter AI**
+
+# 📋  Thông tin dự án 
+
+- **Học phần**: MAT3508 – Nhập môn Trí tuệ Nhân tạo  
+- **Học kỳ**: Học kỳ 1, Năm học 2025-2026
+- **Trường**: VNU-HUS (Đại học Quốc gia Hà Nội – Trường Đại học Khoa học Tự nhiên)
+- **Ngày nộp**: 30/11/2025
+- **Báo cáo PDF**: [Liên kết tới báo cáo PDF]
+- **Slide thuyết trình**: [Liên kết tới slide thuyết trình]
+- **Kho GitHub**: https://github.com/iamthuw/Face-Filter-AI
+
 
 # 👥 Thành viên nhóm
-| 👤 Họ và tên       | 🆔 Mã sinh viên | 🐙 GitHub         |
-|--------------------|----------------|------------------|
-| Phạm Thị Minh Thư | 23001562       | iamthuw          |
-| Lê Thị Yến        | 23001963       | ltyen05          |
-| Chu Thị Mỹ Duyên  | 23001509       | chuthimyduyen    |
-| Nguyễn Bảo Thạch  | 23001559       | NgThach          |
-| Nguyễn Tiến Lưỡng | 23001534       | NguyenTienLuong  |
+| 👤 Họ và tên       | 🆔 Mã sinh viên | 🐙 GitHub         | 📊 Đóng góp        |
+|--------------------|----------------|------------------|------------------|
+| Phạm Thị Minh Thư | 23001562       | iamthuw          |Quản lý dự án, phát triển filter|
+| Lê Thị Yến        | 23001963       | ltyen05          |Xây dựng mô hình ViT, kiểm thử|
+| Chu Thị Mỹ Duyên  | 23001509       | chuthimyduyen    |Xử lý dữ liệu|
+| Nguyễn Bảo Thạch  | 23001559       | NgThach          |Xây dựng mô hình MobileNetV2, kiểm thử|
+| Nguyễn Tiến Lưỡng | 23001534       | NguyenTienLuong  |Xây dựng mô hình CNN, kiểm thử, phát triển mô hình chính|
 
 # 🗒️ Tóm tắt
 Dự án **Face Filter AI** sử dụng thị giác máy tính để phát hiện và phân tích khuôn mặt, từ đó áp dụng các hiệu ứng lên từng bộ phận trên khuôn mặt.  
