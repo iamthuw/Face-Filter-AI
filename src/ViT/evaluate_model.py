@@ -28,10 +28,10 @@ import time  # Thêm module time để đo thời gian dự đoán
 from preprocess import load_and_preprocess_data, NUM_LANDMARKS 
 
 # --- Các hằng số và thiết lập ---
-DATA_ROOT = 'ibug_300W_large_face_landmark_dataset'
+DATA_ROOT = 'data/ibug_300W_large_face_landmark_dataset'
 TEST_XML_FILE = os.path.join(DATA_ROOT, 'labels_ibug_300W_test.xml') 
 IMAGE_SIZE = 128
-MODEL_LOAD_PATH = 'saved_model/facial_landmark_detector_vit.h5' 
+MODEL_LOAD_PATH = 'src/ViT/saved_model/facial_landmark_detector_vit.h5' 
 
 # Hằng số ViT (Cần thiết để tái tạo các lớp tùy chỉnh)
 PATCH_SIZE = 16 
@@ -192,6 +192,5 @@ def evaluate_model():
     print(f"Total prediction time:           {prediction_time:.4f} seconds")
     print("==============================================")
 
-
-if _name_ == '_main_':
+if __name__ == '__main__': 
     evaluate_model()

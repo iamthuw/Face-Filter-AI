@@ -45,12 +45,12 @@ if gpus:
         print(e) # Lỗi khởi tạo thiết bị ảo
 
 # --- Các thiết lập chính cho quá trình huấn luyện ---
-DATA_ROOT = 'ibug_300W_large_face_landmark_dataset' # Thư mục gốc chứa dữ liệu 300W
+DATA_ROOT = 'data/ibug_300W_large_face_landmark_dataset' # Thư mục gốc chứa dữ liệu 300W
 TRAIN_XML_FILE = os.path.join(DATA_ROOT, 'labels_ibug_300W_train.xml') # File XML dữ liệu huấn luyện
 IMAGE_SIZE = 128 # Kích thước ảnh đầu vào cho mô hình (ví dụ: 128x128)
 EPOCHS = 100 # Số lượng epoch huấn luyện (sử dụng EarlyStopping để dừng sớm)
 BATCH_SIZE = 32 # Kích thước batch
-MODEL_SAVE_PATH = 'saved_model/facial_landmark_detector_vit.h5' # Đường dẫn lưu mô hình tốt nhất
+MODEL_SAVE_PATH = 'src/ViT/saved_model/facial_landmark_detector_vit.h5' # Đường dẫn lưu mô hình tốt nhất
 
 # --- Đảm bảo thư mục lưu mô hình tồn tại ---
 os.makedirs(os.path.dirname(MODEL_SAVE_PATH), exist_ok=True)

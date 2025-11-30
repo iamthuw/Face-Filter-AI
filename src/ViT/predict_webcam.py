@@ -7,7 +7,7 @@ import os
 from tensorflow.keras import layers 
 
 # --- Các hằng số và thiết lập ---
-MODEL_PATH = 'saved_model/facial_landmark_detector_vit.h5' 
+MODEL_PATH = 'src/ViT/saved_model/facial_landmark_detector_vit.h5'
 IMAGE_SIZE = 128 
 NUM_LANDMARKS = 68 
 PATCH_SIZE = 16 
