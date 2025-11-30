@@ -33,7 +33,7 @@ PADDING_RATIO = 0.18
 # Tỷ lệ dịch chuyển tâm hộp theo trục dọc.
 # - Giá trị âm (-0.02) nghĩa là dịch tâm lên trên 2%.
 # - Mục đích: Haar Cascade thường bắt khuôn mặt hơi thấp, việc dịch lên giúp lấy trọn vẹn cằm.
-Y_OFFSET_RATIO = -0.02 # Dịch khung nhìn xuống 5% chiều cao để lấy thêm cằm
+Y_OFFSET_RATIO = 0.05 # Dịch khung nhìn xuống 5% chiều cao để lấy thêm cằm
 
 # ==========================================
 

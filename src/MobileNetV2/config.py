@@ -17,10 +17,10 @@ import os
 # --- ĐƯỜNG DẪN DỮ LIỆU ---
 # HÃY SỬA ĐƯỜNG DẪN NÀY ĐẾN THƯ MỤC CHỨA ẢNH VÀ FILE .PTS CỦA BẠN
 # Ví dụ: "dataset/300W" hoặc "/data/face_landmarks/raw"
-RAW_DATA_DIR = "data/raw" 
+RAW_DATA_DIR = "../../data/ibug_300W_large_face_landmark_dataset" 
 
 # Thư mục chứa dữ liệu đã tiền xử lý (xml, csv, tfrecords,...)
-PREPROCESSED_DIR = "data/preprocessed"
+PREPROCESSED_DIR = "../../data/ibug_300W_large_face_landmark_dataset/preprocessed"
 TRAIN_XML_PATH = os.path.join(PREPROCESSED_DIR, 'train.xml')
 TEST_XML_PATH = os.path.join(PREPROCESSED_DIR, 'test.xml')
 
@@ -38,7 +38,7 @@ NUM_LANDMARKS = 136
 BATCH_SIZE = 32
 
 # Số epoch mặc định
-NUM_EPOCHS = 100
+NUM_EPOCHS = 130
 
 # Hệ số học mặc định (learning rate)
 LEARNING_RATE = 0.001 
