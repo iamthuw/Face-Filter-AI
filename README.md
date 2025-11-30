@@ -36,8 +36,7 @@
   ├── .gitignore          # Chỉ định các file và thư mục mà Git bỏ qua.
   ├── README.md           # File tài liệu mô tả dự án và hướng dẫn sử dụng.
   ├── apply_filter.py
-  ├── facefilterimage.py
-  ├── filter_webcam.py
+  ├── filter_webcam.py #File triển khai áp filter lên mặt
   ├── README.md   
   └── requirements.txt    # Danh sách các thư viện Python cần thiết (dependencies).
   ```
