@@ -9,7 +9,7 @@
 * **🏫 Trường:** VNU-HUS (Đại học Quốc gia Hà Nội – Trường Đại học Khoa học Tự nhiên)
 * **📝 Tiêu đề:** Face-Filter-AI
 * **📅 Ngày nộp:**  30/11/2025
-* **📄 Báo cáo PDF:** [Liên kết tới báo cáo PDF]
+* **📄 Báo cáo PDF:** https://drive.google.com/file/d/1aftZo73lW4IMU5jApfWPQFrtn_i7i3Vj/view?usp=share_link
 * **🖥️ Slide thuyết trình:** [Liên kết tới slide thuyết trình]
 * **📂 Kho lưu trữ:** https://github.com/iamthuw/Face-Filter-AI
 - **Link data**: https://www.kaggle.com/datasets/toxicloser/ibug-300w-large-face-landmark-dataset
