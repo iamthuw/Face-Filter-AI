@@ -134,7 +134,7 @@ def evaluate_model():
     
     # ... (Phần tải dữ liệu)
     # Tải toàn bộ dữ liệu TEST (X_part1 = 80%, X_part2 = 20%)
-    X_part1, X_part2, y_part1, y_part2 = load_and_preprocess_data(TEST_XML_FILE, DATA_ROOT, IMAGE_SIZE, test_split=0.2, augment=False)
+    X_part1, X_part2, y_part1, y_part2 = load_and_preprocess_data(TEST_XML_FILE, DATA_ROOT, IMAGE_SIZE, test_split=0.2, augment= True)
     
     if len(X_part1) == 0 and len(X_part2) == 0:
         print("ERROR: No test samples loaded from TEST_XML_FILE. Cannot proceed.")
