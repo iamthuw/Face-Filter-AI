@@ -21,11 +21,11 @@ Dự án được tổ chức như sau:
 │   └── ViT/
 │       ├── saved_model/
 │       │   └── facial_landmark_detector_vit.h5 
-│       ├── model.py         # Định nghĩa kiến trúc Vision Transformer (ViT)
-│       ├── train.py         # Script Huấn luyện mô hình
 │       ├── evaluate_model.py # Script Đánh giá mô hình (trên tập Test)
+│       ├── model.py         # Định nghĩa kiến trúc Vision Transformer (ViT)
 │       ├── predict_webcam.py # Script Dự đoán landmark real-time qua webcam
 │       ├── preprocess.py    # Các hàm tải và tiền xử lý dữ liệu (ảnh, landmark)
+│       ├── train.py         # Script Huấn luyện mô hình
 │       └── utils.py         # Các hàm tiện ích (ví dụ: vẽ đồ thị lịch sử loss)
 ├── .gitignore
 ├── README.md
@@ -65,12 +65,15 @@ python train.py
 Sử dụng evaluate_model.py để đánh giá mô hình trên tập kiểm tra:
 python evaluate_model.py
 Kết quả sẽ hiển thị MSE, MAE, R2-square trên tập test
+```bash
+python src/ViT/evaluate_model.py
+```
 ### 4.3. Dự đoán Từ Webcam
 
 Chạy predict_webcam.py để dự đoán điểm mốc trên khuôn mặt trực tiếp từ webcam:
 
 ```bash
-python predict_webcam.py
+python src/ViT/predict_webcam.py
 ```
 
 
