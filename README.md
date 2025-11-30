@@ -1,16 +1,17 @@
+# 🤖 Báo cáo Bài tập nhóm Môn Trí tuệ Nhân tạo
+
 # 🏷️ Tên nhóm: **Nhóm 10**
 
-# 📝 Tên dự án: **Face-Filter AI**
+**📋 Thông tin:**
 
-# 📋  Thông tin dự án 
-
-- **Học phần**: MAT3508 – Nhập môn Trí tuệ Nhân tạo  
-- **Học kỳ**: Học kỳ 1, Năm học 2025-2026
-- **Trường**: VNU-HUS (Đại học Quốc gia Hà Nội – Trường Đại học Khoa học Tự nhiên)
-- **Ngày nộp**: 30/11/2025
-- **Báo cáo PDF**: [Liên kết tới báo cáo PDF]
-- **Slide thuyết trình**: [Liên kết tới slide thuyết trình]
-- **Kho GitHub**: https://github.com/iamthuw/Face-Filter-AI
+* **📚 Môn học:**  MAT3508 – Nhập môn Trí tuệ Nhân tạo  
+* **📅 Học kỳ:** Học kỳ 1, Năm học 2025-2026
+* **🏫 Trường:** VNU-HUS (Đại học Quốc gia Hà Nội – Trường Đại học Khoa học Tự nhiên)
+* **📝 Tiêu đề:** Face-Filter-AI
+* **📅 Ngày nộp:**  30/11/2025
+* **📄 Báo cáo PDF:** [Liên kết tới báo cáo PDF]
+* **🖥️ Slide thuyết trình:** [Liên kết tới slide thuyết trình]
+* **📂 Kho lưu trữ:** https://github.com/iamthuw/Face-Filter-AI
 - **Link data**: https://www.kaggle.com/datasets/toxicloser/ibug-300w-large-face-landmark-dataset
   
 # 👥 Thành viên nhóm
