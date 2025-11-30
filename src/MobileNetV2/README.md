@@ -35,6 +35,10 @@ Cài đặt thư viện: Khuyên dùng môi trường ảo (conda hoặc venv).
 ``` bash
 pip install -r requirements.txt
 ```
+Sau đó hãy chuyển tới module MobileNetV2 
+```bash
+cd src/MobileNetV2
+```
 
 🚀 Hướng dẫn sử dụng
 1. Chuẩn bị dữ liệu
