@@ -30,6 +30,7 @@ Dự án được tổ chức như sau:
 ├── .gitignore
 ├── README.md
 └── requirements.txt         # Thư viện Python cần thiết
+```
 ---
 
 ## 3. Cài đặt (Installation)
