@@ -41,7 +41,7 @@ Sử dụng tệp `requirements.txt` để cài đặt tất cả các thư vi�
 ```bash
 pip install -r requirements.txt
 ```
-### 4. 🏃 Hướng dẫn Sử dụng
+### 4. Hướng dẫn Sử dụng
 
 #### 4.1. Huấn luyện Mô hình
 
@@ -56,6 +56,10 @@ python src/CNN/train.py
 #### 4.2. Đánh giá sai số
 ```bash
 python src/CNN/evaluate.py
+```
+#### 4.3. Chạy thử landmarks trên webcam
+```bash
+python src/CNN/predict_webcam.py
 ```
 
 
