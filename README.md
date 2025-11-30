@@ -13,18 +13,7 @@
 * **🖥️ Slide thuyết trình:** [Liên kết tới slide thuyết trình]
 * **📂 Kho lưu trữ:** https://github.com/iamthuw/Face-Filter-AI
 - **Link data**: https://www.kaggle.com/datasets/toxicloser/ibug-300w-large-face-landmark-dataset
-- Cấu trúc thư mục
-  ```text
-  Face-Filter-AI/
-  ├── data/               # Chứa dữ liệu (Dành cho việc huấn luyện, landmark, hoặc các tài nguyên khác).
-  ├── src/                # Chứa mã nguồn chính được tổ chức theo các mô hình AI.
-  │   ├── CNN/            # Mã nguồn và tài nguyên cho mô hình Convolutional Neural Network (CNN).
-  │   ├── MobileNetV2/    # Mã nguồn và tài nguyên cho mô hình MobileNetV2.
-  │   └── ViT/            # Mã nguồn và tài nguyên cho mô hình Vision Transformer (ViT).
-  ├── .gitignore          # Chỉ định các file và thư mục mà Git bỏ qua.
-  ├── README.md           # File tài liệu mô tả dự án và hướng dẫn sử dụng.
-  └── requirements.txt    # Danh sách các thư viện Python cần thiết (dependencies).
-  ```
+
 
   
 # 👥 Thành viên nhóm
@@ -35,6 +24,23 @@
 | Chu Thị Mỹ Duyên  | 23001509       | chuthimyduyen    |Xử lý dữ liệu|
 | Nguyễn Bảo Thạch  | 23001559       | NgThach          |Xây dựng mô hình MobileNetV2, kiểm thử|
 | Nguyễn Tiến Lưỡng | 23001534       | NguyenTienLuong  |Xây dựng mô hình CNN, kiểm thử, phát triển mô hình chính|
+
+# Cấu trúc thư mục
+  ```text
+  Face-Filter-AI/
+  ├── data/               # Chứa dữ liệu (Dành cho việc huấn luyện, landmark, hoặc các tài nguyên khác).
+  ├── src/                # Chứa mã nguồn chính được tổ chức theo các mô hình AI.
+  │   ├── CNN/            # Mã nguồn và tài nguyên cho mô hình Convolutional Neural Network (CNN).
+  │   ├── MobileNetV2/    # Mã nguồn và tài nguyên cho mô hình MobileNetV2.
+  │   └── ViT/            # Mã nguồn và tài nguyên cho mô hình Vision Transformer (ViT).
+  ├── .gitignore          # Chỉ định các file và thư mục mà Git bỏ qua.
+  ├── README.md           # File tài liệu mô tả dự án và hướng dẫn sử dụng.
+  ├── apply_filter.py
+  ├── facefilterimage.py
+  ├── filter_webcam.py
+  ├── README.md   
+  └── requirements.txt    # Danh sách các thư viện Python cần thiết (dependencies).
+  ```
 
 # Triển khai filter sử dụng webcam
 Bấm số 1 chuyển sang filter kính, số 2 chuyển sang filter râu, số 3 chuyển sang filter mũi lợn, số 4 chuyển sang filter má hồng
