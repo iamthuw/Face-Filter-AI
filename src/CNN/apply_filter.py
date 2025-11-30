@@ -215,7 +215,7 @@ def draw_blush(frame, landmarks, blush_img):
     w = int(blush_img.shape[1] * 0.15 * scale)
     h = int(blush_img.shape[0] * 0.15 * scale)
 
-    offset_y = 1      # chỉnh vị trí cao/thấp
+    offset_y = -15      # chỉnh vị trí cao/thấp
     offset_x = 11     # tách ra khỏi mũi
 
     frame = overlay_image_alpha(frame, blush_img,
@@ -229,3 +229,4 @@ def draw_blush(frame, landmarks, blush_img):
                                 (w, h), flip_y=True)
 
     return frame
+
