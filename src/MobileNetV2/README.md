@@ -12,10 +12,7 @@ Dự án này xây dựng hệ thống nhận diện 68 điểm mốc trên khu�
 
 ```text
 MobileNetV2/
-├── data/
-│   ├── raw/                 # Chứa ảnh gốc (.jpg/.png) và file nhãn (.pts)
-│   ├── preprocessed/        # Chứa file xml (train.xml, test.xml) sau khi xử lý
-├── models/                  # Lưu model (.h5) sau khi train
+├── models/                  # Lưu model (.h5) sau khi train và file mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5 để load trọng số của mô hình MobileNetV2 thay vì phải tải từ thư viện tránh lỗi SSL
 ├── plots/                   # Lưu biểu đồ Loss và MAE sau khi train
 ├── config.py                # Cấu hình toàn bộ tham số (đường dẫn, hyperparams)
 ├── preprocess.py            # Code xử lý dữ liệu, cắt mặt, chuẩn hóa
