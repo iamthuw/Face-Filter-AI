@@ -11,9 +11,8 @@
 - **Báo cáo PDF**: [Liên kết tới báo cáo PDF]
 - **Slide thuyết trình**: [Liên kết tới slide thuyết trình]
 - **Kho GitHub**: https://github.com/iamthuw/Face-Filter-AI
-- **Link data**: https://drive.google.com/drive/folders/1WouKb3N7V4pq4cKar0tCaivHDdSAqrHq?usp=share_link
-
-
+- **Link data**: https://www.kaggle.com/datasets/toxicloser/ibug-300w-large-face-landmark-dataset
+  
 # 👥 Thành viên nhóm
 | 👤 Họ và tên       | 🆔 Mã sinh viên | 🐙 GitHub         | 📊 Đóng góp        |
 |--------------------|----------------|------------------|------------------|
