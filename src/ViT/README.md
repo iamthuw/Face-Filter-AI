@@ -13,21 +13,23 @@ Module này triển khai một **Vision Transformer (ViT)** để giải quyết
 
 Dự án được tổ chức như sau:
 
-```text
-ViT/
-├── ibug_300W_large_face_landmark_dataset/ # Thư mục chứa dữ liệu đầu vào (cần tải về)
-├── saved_model/
-│ └── facial_landmark_detector_vit.h5 # Mô hình ViT đã huấn luyện
-│
-├── evaluate_model.py # Script đánh giá mô hình
-├── model.py # Định nghĩa kiến trúc Vision Transformer
-├── predict_webcam.py # Dự đoán điểm mốc từ webcam
-├── preprocess.py # Tiền xử lý dữ liệu
-├── train.py # Script huấn luyện mô hình
-├── utils.py # Hàm tiện ích: vẽ đồ thị, tính loss, metric
-└── README.md # Tệp hướng dẫn này
-```
 
+```text
+├── data/
+│   └── ibug_300W_large_face_landmark_dataset/ # Thư mục chứa dữ liệu đầu vào (cần tải về)
+├── src/
+│   └── ViT/
+│       ├── saved_model/
+│       │   └── facial_landmark_detector_vit.h5 
+│       ├── model.py         # Định nghĩa kiến trúc Vision Transformer (ViT)
+│       ├── train.py         # Script Huấn luyện mô hình
+│       ├── evaluate_model.py # Script Đánh giá mô hình (trên tập Test)
+│       ├── predict_webcam.py # Script Dự đoán landmark real-time qua webcam
+│       ├── preprocess.py    # Các hàm tải và tiền xử lý dữ liệu (ảnh, landmark)
+│       └── utils.py         # Các hàm tiện ích (ví dụ: vẽ đồ thị lịch sử loss)
+├── .gitignore
+├── README.md
+└── requirements.txt         # Thư viện Python cần thiết
 ---
 
 ## 3. Cài đặt (Installation)
