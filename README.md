@@ -13,6 +13,19 @@
 * **🖥️ Slide thuyết trình:** [Liên kết tới slide thuyết trình]
 * **📂 Kho lưu trữ:** https://github.com/iamthuw/Face-Filter-AI
 - **Link data**: https://www.kaggle.com/datasets/toxicloser/ibug-300w-large-face-landmark-dataset
+- Cấu trúc thư mục
+  ```text
+  Face-Filter-AI/
+  ├── data/               # Chứa dữ liệu (Dành cho việc huấn luyện, landmark, hoặc các tài nguyên khác).
+  ├── src/                # Chứa mã nguồn chính được tổ chức theo các mô hình AI.
+  │   ├── CNN/            # Mã nguồn và tài nguyên cho mô hình Convolutional Neural Network (CNN).
+  │   ├── MobileNetV2/    # Mã nguồn và tài nguyên cho mô hình MobileNetV2.
+  │   └── ViT/            # Mã nguồn và tài nguyên cho mô hình Vision Transformer (ViT).
+  ├── .gitignore          # Chỉ định các file và thư mục mà Git bỏ qua.
+  ├── README.md           # File tài liệu mô tả dự án và hướng dẫn sử dụng.
+  └── requirements.txt    # Danh sách các thư viện Python cần thiết (dependencies).
+  ```
+
   
 # 👥 Thành viên nhóm
 | 👤 Họ và tên       | 🆔 Mã sinh viên | 🐙 GitHub         | 📊 Đóng góp        |
