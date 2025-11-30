@@ -22,6 +22,14 @@
 | Nguyễn Bảo Thạch  | 23001559       | NgThach          |Xây dựng mô hình MobileNetV2, kiểm thử|
 | Nguyễn Tiến Lưỡng | 23001534       | NguyenTienLuong  |Xây dựng mô hình CNN, kiểm thử, phát triển mô hình chính|
 
+# Triển khai filter sử dụng webcam
+Bấm số 1 chuyển sang filter kính, số 2 chuyển sang filter râu, số 3 chuyển sang filter mũi lợn, số 4 chuyển sang filter má hồng
+
+Để có thể mở webcam và áp các filter lên khuôn mặt thực hiện lệnh sau 
+```bash
+python filter_webcam.py
+```
+
 # 🗒️ Tóm tắt
 Dự án **Face Filter AI** sử dụng thị giác máy tính để phát hiện và phân tích khuôn mặt, từ đó áp dụng các hiệu ứng lên từng bộ phận trên khuôn mặt.  
 Hệ thống cho phép gắn filter trực quan trên ảnh (có thể mở rộng sang video và camera real-time), mang lại trải nghiệm tự nhiên và sáng tạo cho người dùng. 
