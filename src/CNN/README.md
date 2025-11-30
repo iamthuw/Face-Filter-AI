@@ -14,8 +14,8 @@ Module này triển khai một **Mạng nơ-ron Tích chập (CNN)** để giả
 Dự án được tổ chức như sau:
 
 ```text
-.
-├── ibug_300W_large_face_landmark_dataset/ # Thư mục chứa dữ liệu đầu vào (cần tải về)
+├──data
+│   └──ibug_300W_large_face_landmark_dataset/ # Thư mục chứa dữ liệu đầu vào (cần tải về)
 │
 ├── src/
 │   └── CNN/
@@ -57,4 +57,5 @@ python src/CNN/train.py
 ```bash
 python src/CNN/evaluate.py
 ```
+
 
