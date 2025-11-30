@@ -9,7 +9,7 @@ from preprocess import load_and_preprocess_data
 
 # --- Cấu hình Đường dẫn và Hằng số ---
 
-DATA_ROOT = "ibug_300W_large_face_landmark_dataset"
+DATA_ROOT = "data/ibug_300W_large_face_landmark_dataset"
 # File XML chứa landmarks cho tập kiểm tra
 TEST_XML_FILE = os.path.join(DATA_ROOT, "labels_ibug_300W_test.xml")
 # Đường dẫn tới file mô hình đã huấn luyện tốt nhất
