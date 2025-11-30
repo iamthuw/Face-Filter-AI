@@ -7,7 +7,7 @@ from utils import plot_training_history
 
 # --- Các thiết lập chính ---
 #Thư mục gốc chứa toàn bộ tập dữ liệu (ảnh + file XML)
-DATA_ROOT = 'ibug_300W_large_face_landmark_dataset' 
+DATA_ROOT = 'data/ibug_300W_large_face_landmark_dataset' 
 # Đường dẫn tới file XML chứa tọa độ landmark và đường dẫn ảnh cho tập huấn luyện
 TRAIN_XML_FILE = os.path.join(DATA_ROOT, 'labels_ibug_300W_train.xml')
 # Kích thước ảnh đầu vào (ảnh sẽ được resize về kích thước vuông này)
